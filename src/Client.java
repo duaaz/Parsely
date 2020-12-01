@@ -3,11 +3,11 @@ import java.io.*;
 
 public class Client {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
-		Set<Resume> candidates = new HashSet<>();
-		Set<String> basicKeyWords = new HashSet<>();
-		Set<String> desiredKeyWords = new HashSet<>();
+		HashSet<Resume> candidates = new HashSet<>();
+		HashSet<String> basicKeyWords = new HashSet<>();
+		HashSet<String> desiredKeyWords = new HashSet<>();
 		
 	    System.out.println("Hello technical recruiter!");
 	    Scanner scanner = new Scanner(System.in);
@@ -42,8 +42,25 @@ public class Client {
 	    }
 	    
 		Algorithm evaluating = new Algorithm(candidates, basicKeyWords, desiredKeyWords, weight);
-		// evaluate
-		// print all results or print individual candidate
+	    evaluating.evaluate(candidates);
+	    System.out.print("Would you like to print it out evaulation results for candidates individually, as a group, or both? ");
+	    String howToPrint = scanner.next();
+	    if (howToPrint.equals("individually")) {
+	    	for (Resume cand : candidates) {
+	    		evaluating.printIndvCurve(cand);
+	    	}
+	    } else if (howToPrint.equals("group")) {
+	    	evaluating.printAllResults();
+	    } else {
+	    	System.out.println("Group Results");
+	    	evaluating.printAllResults();
+	    	System.out.println();
+	    	System.out.println("Individual Results");
+	    	for (Resume cand : candidates) {
+	    		evaluating.printIndvCurve(cand);
+	    	}
+	    	
+	    }
 
 	}
 
