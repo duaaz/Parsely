@@ -33,31 +33,31 @@ public class Resume {
    private Map<String, Integer> experience; 
    //these are the months in the years, and they are abbreviated  
    private ArrayList<String> months;
-   //these are helper fields for the methods, to help store the data 
-   private Map<String, Integer> time;
+   //this is the scanner we will need 
    private Scanner scanner;
-   //percentile of the cainidate relative to other cainidates  
-   private double percentile;
    //this is the file of the resume  
    private File resumeData;  
    
    //i think we are going to pass in a file instead perhaps  
    public Resume(File file) throws FileNotFoundException {
-      this.name = "";
-      this.resumeData = file;
       scanner = new Scanner(file);
+      this.name = "";
+      String firstName = scanner.next();
+      String lastName = scanner.next();
+      this.name = firstName + " " + lastName; 
+      this.resumeData = file;
       //initalizing the Set of keywords in which we will be returning later 
-      this.keyWords = new HashSet<String>();
+      this.keyWords = new TreeSet<String>();
       while(scanner.hasNext()) {
          String word = scanner.next();
          this.keyWords.add(word);
       }
-      this.experience = new HashMap<String, Integer>();	      
-      this.time = new HashMap<String, Integer>();
+      this.experience = new TreeMap<String, Integer>();
+      this.months = new ArrayList<String>();	      
       //first one is 11/30/2015, Nov 27, 2002 
-      String [] months = {"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"}; 
-      for (int i = 0; i < months.length; i++) {
-         this.months.add(months[i]);
+      String [] month = {"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"}; 
+      for (int i = 0; i < month.length; i++) {
+         months.add(month[i]);
       }
    }
    
@@ -74,6 +74,7 @@ public class Resume {
    }
    
    //this will check to see if all of the words are contained within your keyWords needed map  
+   //might want to remove this later 
    public boolean qualify(Set<String> neededWords) {
      return keyWords.containsAll(neededWords);
    }
@@ -85,11 +86,7 @@ public class Resume {
    public Map<String, Integer> getExperience() throws FileNotFoundException {
       scanner = new Scanner(this.resumeData);
       //this will work if we are assuming that the first 2 words are going to be the 
-      //name of the person in which we are talking about  
-      this.name = "";
-      String firstName = scanner.next();
-      String lastName = scanner.next();
-      this.name = firstName + " " + lastName; 
+      //name of the person in which we are talking about
       while(scanner.hasNextLine()) {
          int totalMonths = 0;
          String line = scanner.nextLine();
@@ -98,14 +95,16 @@ public class Resume {
          //and then from that one line, give that one keyword a time 
          //this will allow me to only change the times on the keywords found on
          //the one line 
-         Set<String> foundWords = new HashSet<String>();  
+         Set<String> foundWords = new TreeSet<String>();  
          while (newScan.hasNext()) {
             //this is a starter for the reading in of the time, but
             //this is going to be trickier than i thought  
             String word = newScan.next();
-            foundWords.add(word);
-            if (months.contains(word.substring(0, 3))) {
-               String startMonth = newScan.next();
+            word = word.toLowerCase();
+            //this is how we are going to find the time 
+            //associated with each word on one line of the code  
+            if (months.contains(word)) {
+               String startMonth = word;
                int startYear = newScan.nextInt();
                //we will think about what to do with a to or a - (always a -, or can it be a to/from, and etc.)  
                newScan.next(); //throws away the dash in the text 
@@ -114,16 +113,30 @@ public class Resume {
                totalMonths += (endYear - startYear) * 12;
                //approx 30 days for each month, we can figure this out later as well
                totalMonths += months.indexOf(endMonth) - months.indexOf(startMonth);
-            } 
+            } else {
+               foundWords.add(word);
+            }
         }
         for (String keyWord : foundWords) {
+           if (!experience.containsKey(keyWord)) {
+              experience.put(keyWord, 0);
+           }
            //for each of the words that were in that one line
            //we will add the additional time
            //but, we do not want to add the time to every word found,
            //unless if it was on the line  
-           experience.put(keyWord, time.get(keyWord) + totalMonths);
+           experience.put(keyWord, experience.get(keyWord) + totalMonths);
         }
       }
+      //this is to remove all the cases where the experience is just 0  
+      Set<String> remove = new HashSet<String>();
+      for (String keyWords : experience.keySet()) {
+         int time = experience.get(keyWords);
+         if (time == 0) {
+            remove.add(keyWords);
+         }
+      }
+      experience.keySet().removeAll(remove);
       return experience;
    }
    
