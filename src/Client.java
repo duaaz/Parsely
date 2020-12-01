@@ -40,7 +40,8 @@ public class Client {
 	    	Resume candidate = new Resume(new File(name));
 	    	candidates.add(candidate);
 	    }
-		Algorithm evaluating = new Algorithm(candidates);
+	    
+		Algorithm evaluating = new Algorithm(candidates, basicKeyWords, desiredKeyWords, weight);
 		// evaluate
 		// print all results or print individual candidate
 

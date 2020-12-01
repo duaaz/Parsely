@@ -53,9 +53,9 @@ public class BellCurve {
 	    }
 	 
 	 //get rid of this at the end
-	 public static void main(String[] args) {
+	 /*public static void main(String[] args) {
 	        BellCurve newOne1 = new BellCurve(105, 19);
-	        //newOne1.plot();
+	        newOne1.plot();
 	        newOne1.plotIndvCandidate(124);
-	 }
+	 }*/
 }

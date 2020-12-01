@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ public class Algorithm {
 	//Set of all potential candidates in pool 
 	private HashSet<Resume> candidates;
 	//map of candidates and if they are accepted/rejected along with percentile against population 
-	private HashMap<Resume, Map<Boolean, Double>> acceptance;
+	private HashMap<Resume, Decision> acceptance;
 	private double median;
 	private double stndDev;
 	private double avg;
@@ -20,7 +21,7 @@ public class Algorithm {
 	private HashSet<String> desiredSkills;
 	private String weight;
 	
-	public Algorithm(HashSet<Resume> newCandidates, HashSet<String> newBasicSkills, HashSet<String> newDesiredSkills, String newWeight) {
+	public Algorithm(HashSet<Resume> newCandidates, HashSet<String> newBasicSkills, HashSet<String> newDesiredSkills, String newWeight) throws FileNotFoundException {
 		basicSkills = newBasicSkills;
 		desiredSkills = newDesiredSkills;
 		weight = newWeight;
@@ -39,9 +40,9 @@ public class Algorithm {
 		return false;
 	}
 	
-	public Integer assess(Resume candidate, HashSet<String> desiredSkills, String weight) {
+	public Integer assess(Resume candidate, HashSet<String> desiredSkills, String weight) throws FileNotFoundException {
 		int totalPoints = 0;
-		HashSet<String> skills = candidate.getKeyWords();
+		Set<String> skills = candidate.getKeyWords();
 		Map<String, Integer> experience = candidate.getExperience();
 		//determines if recruiter enters in skills, experience, or both for weighted points 
 		if(weight.toLowerCase().equals("skills")) {
@@ -74,31 +75,29 @@ public class Algorithm {
 	//if candidate is less than 50% percentile, they are rejected (can potentially let recruiter enter method)
 	//puts results in a HashMap 
 	//make another object instead 
-	public HashMap<Resume, Map<Boolean, Double>> evaluate(HashSet<Resume> potCandidates){
-		HashMap<Resume, Map<Boolean, Double>> evaluation = new HashMap<>();
+	public HashMap<Resume, Decision> evaluate(HashSet<Resume> potCandidates) throws FileNotFoundException{
+		HashMap<Resume, Decision> evaluation = new HashMap<>();
 		Iterator<Resume> itr = potCandidates.iterator();
 		//reject candidates without basic skills
 		while(itr.hasNext()) {
 			Resume candidate = itr.next();
 			if(!qualify(basicSkills, candidate)) {
-				evaluation.put(candidate, new HashMap<Boolean, Double>());
-				//assigns candidate that do not meet basic qualifications at 0% of the curve
-				evaluation.get(candidate).put(false, 0.0);
-				//remove candidate from potential candidates
+				//just give 0 points if don't even meet basic qualifications 
+				evaluation.put(candidate, new Decision(false, 0.0, 0));
 				itr.remove();
 			}
 		}
 		//do assess method to assign points to candidates
-		//Hashmap of total points of candidate, candidate
 		HashMap<Integer, Resume> candidatePoints = new HashMap<>();
 		while(itr.hasNext()) {
 			Resume curCandidate = itr.next();
 			//assign point value to each candidate
 			candidatePoints.put(assess(curCandidate,desiredSkills,weight), curCandidate);
 		}
-		//sort from least to most total points 
+		//sort from least to most total points, with points as they key 
 		TreeMap<Integer, Resume> tempOrderedCandidates = new TreeMap<>(candidatePoints);
-		//array list of total points in order
+		//array list of total points in order for calculating statistics 
+		//sorted an array list in this manner because don't know how to sort a set
 		ArrayList<Integer> orderedPoints = new ArrayList<>();
 		//add all candidate points in ordered arraylist
 		for(Integer points: tempOrderedCandidates.keySet()) {
@@ -111,15 +110,18 @@ public class Algorithm {
 		//less than certain percentile -> rejected
 		//in this case use 50% as example, can be changed if want recruiter to make choice 
 		for(Integer points:tempOrderedCandidates.keySet()) {
+			int totalPoints = points;
 			Double percent = getPercentile(points, orderedPoints);
 			Resume candidate = tempOrderedCandidates.get(points);
+			//give each candidate a decision
+			Decision temp = new Decision(false, percent, totalPoints);
 			if(percent < 0.5) {
 				//if less than 50%, candidate is rejected
-				evaluation.put(candidate, new HashMap<Boolean, Double>());
-				evaluation.get(candidate).put(false, percent);
+				evaluation.put(candidate, temp);
 			}else {
-				evaluation.put(candidate, new HashMap<Boolean, Double>());
-				evaluation.get(candidate).put(true, percent);
+				//only accept candidate if they are better than 50%
+				temp.setAcceptance(true);
+				evaluation.put(candidate, temp);
 			}
 		}
 		return evaluation; 
@@ -135,14 +137,12 @@ public class Algorithm {
 		System.out.println("--------- Candidate Statistics ---------");
 		for(Resume candidate:acceptance.keySet()) {
 			System.out.println("Candidate: " + candidate.getName());
-			boolean accept = true;
-			if(acceptance.get(candidate).containsKey(true)) {
+			if(acceptance.get(candidate).getAcceptance()) {
 				System.out.println("Candidate was accepted");
 			}else {
 				System.out.println("Candidate was rejected");
-				accept = false;
 			}
-			System.out.println("Percentile: " + acceptance.get(candidate).get(accept));
+			System.out.println("Percentile: " + acceptance.get(candidate).getPercentile());
 		}
 		printCurve();
 	}
@@ -150,16 +150,14 @@ public class Algorithm {
 	//prints individual candidate statistics 
 	public void printIndvResult(Resume candidate) {
 		System.out.println("Candidate: " + candidate.getName());
-		boolean accept = true;
-		if(acceptance.get(candidate).containsKey(true)) {
+		if(acceptance.get(candidate).getAcceptance()) {
 			System.out.println("Candidate was accepted");
 		}else {
 			System.out.println("Candidate was rejected");
-			accept = false;
 		}
+		System.out.println("Percentile: " + acceptance.get(candidate).getPercentile());
 		//need getKeyWords method 
-		System.out.println("Main Skills: " + candidate.getkeyWords().toString());
-		System.out.println("Percentile: " + acceptance.get(candidate).get(accept));
+		System.out.println("Main Skills: " + candidate.getKeyWords().toString());
 		printIndvCurve(candidate);
 	}
 	
@@ -172,7 +170,7 @@ public class Algorithm {
 	//plots point against curve for candidate
 	public void printIndvCurve(Resume candidate) {
 			BellCurve newCurve = new BellCurve(avg, stndDev);
-			newCurve.plotIndvCandidate(candidate.getTotalPoints());
+			newCurve.plotIndvCandidate(acceptance.get(candidate).getTotalPoints());
 	}
 		
 	//returns median points of population
