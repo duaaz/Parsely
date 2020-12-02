@@ -1,6 +1,5 @@
 import java.util.*;
 import java.io.*;
-
 public class Client {
 
 	public static void main(String[] args) throws FileNotFoundException {
@@ -34,7 +33,8 @@ public class Client {
 	    String weight = scanner.next();
 	    // pass weight into assess
 	    System.out.println("Type in all the file names of candidate resumes you wish to consider, separated by commas: ");
-	    String allResumeNames = scanner.nextLine();
+	    //will need to figure out how to do scanner.nextLine() eventually
+	    String allResumeNames = scanner.next();
 	    String[] allNamesSplit = allResumeNames.split(", ");
 	    for (String name : allNamesSplit) {
 	    	Resume candidate = new Resume(new File(name));
