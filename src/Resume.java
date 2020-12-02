@@ -38,6 +38,8 @@ public class Resume {
    //this is the file of the resume  
    private File resumeData;  
    
+   private String[] formats = {"%m/%d/%y", "%M %d, %y", "%d/%m/%y"};
+   
    //i think we are going to pass in a file instead perhaps  
    public Resume(File file) throws FileNotFoundException {
       scanner = new Scanner(file);
@@ -99,8 +101,7 @@ public class Resume {
          while (newScan.hasNext()) {
             //this is a starter for the reading in of the time, but
             //this is going to be trickier than i thought  
-            String word = newScan.next();
-            word = word.toLowerCase();
+            String word = normalize(newScan.next());
             //this is how we are going to find the time 
             //associated with each word on one line of the code  
             if (months.contains(word)) {
@@ -108,8 +109,18 @@ public class Resume {
                int startYear = newScan.nextInt();
                //we will think about what to do with a to or a - (always a -, or can it be a to/from, and etc.)  
                newScan.next(); //throws away the dash in the text 
-               String endMonth = newScan.next().substring(0, 3);
-               int endYear = newScan.nextInt();
+               String endMonth = newScan.next();
+               int endYear = 0;
+               if (endMonth.equalsIgnoreCase("present")){
+                  //endMonth = String.format("%d", Calendar.MONTH);
+                  //Date date = new Date();
+                  Calendar calendar = new GregorianCalendar();
+                  endMonth = months.get(calendar.get(calendar.MONTH));
+                  endYear = calendar.get(calendar.YEAR);  
+               } else {  
+                  endMonth = endMonth.substring(0, 3);
+                  endYear = newScan.nextInt();
+               }
                totalMonths += (endYear - startYear) * 12;
                //approx 30 days for each month, we can figure this out later as well
                totalMonths += months.indexOf(endMonth) - months.indexOf(startMonth);
@@ -140,9 +151,19 @@ public class Resume {
       return experience;
    }
    
+   public String normalize(String word) {
+      word = word.toLowerCase(); 
+      word = word.trim();
+      char end = word.charAt(word.length() - 1);
+      if (!Character.isLetterOrDigit(end)) {
+         word = word.substring(0, word.length() - 1);
+      }
+      return word;
+   }
+   
    // we want to figure out, are we going to be returning how many sets...
    public Map<String, Set<String>> containsWanted(Map<String, Set<String>> keyWord) {
-      Map<String, Set<String>> foundKeyWords = new HashMap<String, Set<String>>();
+      Map<String, Set<String>> foundKeyWords = new TreeMap<String, Set<String>>();
       for (String type : keyWord.keySet()) {
          Set<String> possibleKeyWords = keyWord.get(type);
          for (String possibleKeyWord : possibleKeyWords) {
