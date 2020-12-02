@@ -171,7 +171,7 @@ public class Algorithm {
 	//plots point against curve for candidate
 	public void printIndvCurve(Resume candidate) {
 			BellCurve newCurve = new BellCurve(avg, stndDev);
-			newCurve.plotIndvCandidate(acceptance.get(candidate).getTotalPoints());
+			newCurve.plotIndvCandidate(acceptance.get(candidate).getTotalPoints(), candidate.getName());
 	}
 		
 	//returns median points of population
