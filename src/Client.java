@@ -26,15 +26,13 @@ public class Client {
 	    	desiredKeyWords.add(desSkill);
 	    }
 	
-	    
-
 	    System.out.println("Do you value experience, skills, or both equally in a candidate?");
 	    //assess(Resume candidate, HashSet<String> desiredSkills, String weight)
 	    System.out.print("Type 'experience', 'skills', or 'equal': ");
 	    String weight = scanner.next();
 	    // pass weight into assess
 	    System.out.println("Type in all the file names of candidate resumes you wish to consider, separated by commas: ");
-	    String allResumeNames = scanner.nextLine();
+	    String allResumeNames = scanner.next();
 	    String[] allNamesSplit = allResumeNames.split(", ");
 	    for (String name : allNamesSplit) {
 	    	Resume candidate = new Resume(new File(name));
@@ -47,7 +45,7 @@ public class Client {
 	    String howToPrint = scanner.next();
 	    if (howToPrint.equals("individually")) {
 	    	for (Resume cand : candidates) {
-	    		evaluating.printIndvCurve(cand);
+	    		evaluating.printIndvResult(cand);
 	    	}
 	    } else if (howToPrint.equals("group")) {
 	    	evaluating.printAllResults();
@@ -57,7 +55,7 @@ public class Client {
 	    	System.out.println();
 	    	System.out.println("Individual Results");
 	    	for (Resume cand : candidates) {
-	    		evaluating.printIndvCurve(cand);
+	    		evaluating.printIndvResult(cand);
 	    	}
 	    	
 	    }
