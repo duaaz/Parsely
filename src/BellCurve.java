@@ -31,7 +31,7 @@ public class BellCurve {
 	        }
 	 }
 	 
-	 public void plotIndvCandidate(double points) {
+	 public void plotIndvCandidate(double points, String name) {
 		 plot();
 		 StdDraw.setPenColor(StdDraw.BLACK);
 		 Font font = new Font("Arial", Font.BOLD, 50);
@@ -39,7 +39,7 @@ public class BellCurve {
 		 StdDraw.text(points, 0.015+pdf(points,avg,stndDev), "x");
 		 Font font2 = new Font("Arial", Font.ITALIC, 16);
 		 StdDraw.setFont(font2);
-		 StdDraw.text(points, 0.0125+pdf(points,avg,stndDev), "You are here");
+		 StdDraw.text(points, 0.0125+pdf(points,avg,stndDev), name+", "+points);
 	 }
 	 
 	 //return pdf(x) = standard Gaussian pdf
@@ -56,6 +56,6 @@ public class BellCurve {
 	 /*public static void main(String[] args) {
 	        BellCurve newOne1 = new BellCurve(105, 19);
 	        newOne1.plot();
-	        newOne1.plotIndvCandidate(124);
+	        newOne1.plotIndvCandidate(124, "Bob");
 	 }*/
 }

@@ -34,8 +34,6 @@ public class Algorithm {
 	}
 	
 	public boolean qualify(HashSet<String> basicSkills, Resume candidate) {
-		//don't need another containsAll method, java has this method as part of collections
-		//I need a getkeywords method without the file parameter
 		if (candidate.getKeyWords().containsAll(basicSkills)) return true;
 		return false;
 	}
@@ -49,7 +47,7 @@ public class Algorithm {
 			for(String skill:desiredSkills) {
 				if(skills.contains(skill)) {
 					totalPoints+=2;
-					totalPoints+=experience.get(skill);
+					totalPoints+=experience.get(skill.toLowerCase());
 				}
 			}
 			
@@ -57,14 +55,14 @@ public class Algorithm {
 			for(String skill:desiredSkills) {
 				if(skills.contains(skill)) {
 					totalPoints+=1;
-					totalPoints+=2*experience.get(skill);
+					totalPoints+=2*experience.get(skill.toLowerCase());
 				}
 			}
 		}else {
 			for(String skill:desiredSkills) {
 				if(skills.contains(skill)) {
 					totalPoints+=1;
-					totalPoints+=experience.get(skill);
+					totalPoints+=experience.get(skill.toLowerCase());
 				}
 			}
 		}
@@ -77,51 +75,54 @@ public class Algorithm {
 	//make another object instead 
 	public HashMap<Resume, Decision> evaluate(HashSet<Resume> potCandidates) throws FileNotFoundException{
 		HashMap<Resume, Decision> evaluation = new HashMap<>();
-		Iterator<Resume> itr = potCandidates.iterator();
-		//reject candidates without basic skills
-		while(itr.hasNext()) {
-			Resume candidate = itr.next();
-			if(!qualify(basicSkills, candidate)) {
-				//just give 0 points if don't even meet basic qualifications 
-				evaluation.put(candidate, new Decision(false, 0.0, 0));
-				itr.remove();
+		if(potCandidates != null) {
+			Iterator<Resume> itr = potCandidates.iterator();
+			//reject candidates without basic skills
+			while(itr.hasNext()) {
+				Resume candidate = itr.next();
+				if(!qualify(basicSkills, candidate)) {
+					//just give 0 points if don't even meet basic qualifications 
+					evaluation.put(candidate, new Decision(false, 0.0, 0));
+					itr.remove();
+				}
 			}
-		}
-		//do assess method to assign points to candidates
-		HashMap<Integer, Resume> candidatePoints = new HashMap<>();
-		while(itr.hasNext()) {
-			Resume curCandidate = itr.next();
-			//assign point value to each candidate
-			candidatePoints.put(assess(curCandidate,desiredSkills,weight), curCandidate);
-		}
-		//sort from least to most total points, with points as they key 
-		TreeMap<Integer, Resume> tempOrderedCandidates = new TreeMap<>(candidatePoints);
-		//array list of total points in order for calculating statistics 
-		//sorted an array list in this manner because don't know how to sort a set
-		ArrayList<Integer> orderedPoints = new ArrayList<>();
-		//add all candidate points in ordered arraylist
-		for(Integer points: tempOrderedCandidates.keySet()) {
-			orderedPoints.add(points);
-		}
-		//little sketch to be calculating fields here but I think it should be ok
-		median = getMedian(orderedPoints);
-		stndDev = getStandardDev(orderedPoints, median);
-		avg = getAverage(orderedPoints);
-		//less than certain percentile -> rejected
-		//in this case use 50% as example, can be changed if want recruiter to make choice 
-		for(Integer points:tempOrderedCandidates.keySet()) {
-			int totalPoints = points;
-			Double percent = getPercentile(points, orderedPoints);
-			Resume candidate = tempOrderedCandidates.get(points);
-			//give each candidate a decision
-			Decision temp = new Decision(false, percent, totalPoints);
-			if(percent < 0.5) {
-				//if less than 50%, candidate is rejected
-				evaluation.put(candidate, temp);
-			}else {
-				//only accept candidate if they are better than 50%
-				temp.setAcceptance(true);
-				evaluation.put(candidate, temp);
+			//do assess method to assign points to candidates
+			HashMap<Integer, Resume> candidatePoints = new HashMap<>();
+			for (Resume remainCandidate: potCandidates) {
+				int points = assess(remainCandidate,desiredSkills,weight);
+				candidatePoints.put(points, remainCandidate);
+			}
+			//sort from least to most total points, with points as they key 
+			TreeMap<Integer, Resume> tempOrderedCandidates = new TreeMap<>(candidatePoints);
+			if(tempOrderedCandidates != null) {
+				//array list of total points in order for calculating statistics 
+				//sorted an array list in this manner because don't know how to sort a set
+				ArrayList<Integer> orderedPoints = new ArrayList<>();
+				//add all candidate points in ordered arraylist
+				for(Integer points: tempOrderedCandidates.keySet()) {
+					orderedPoints.add(points);
+				}
+				//little sketch to be calculating fields here but I think it should be ok
+				median = getMedian(orderedPoints);
+				stndDev = getStandardDev(orderedPoints, median);
+				avg = getAverage(orderedPoints);
+				//less than certain percentile -> rejected
+				//in this case use 50% as example, can be changed if want recruiter to make choice 
+				for(Integer points:tempOrderedCandidates.keySet()) {
+					int totalPoints = points;
+					Double percent = getPercentile(points, orderedPoints);
+					Resume candidate = tempOrderedCandidates.get(points);
+					//give each candidate a decision
+					Decision temp = new Decision(false, percent, totalPoints);
+					if(percent < 0.5) {
+						//if less than 50%, candidate is rejected
+						evaluation.put(candidate, temp);
+					}else {
+						//only accept candidate if they are better than 50%
+						temp.setAcceptance(true);
+						evaluation.put(candidate, temp);
+					}
+				}
 			}
 		}
 		return evaluation; 
@@ -170,11 +171,12 @@ public class Algorithm {
 	//plots point against curve for candidate
 	public void printIndvCurve(Resume candidate) {
 			BellCurve newCurve = new BellCurve(avg, stndDev);
-			newCurve.plotIndvCandidate(acceptance.get(candidate).getTotalPoints());
+			newCurve.plotIndvCandidate(acceptance.get(candidate).getTotalPoints(), candidate.getName());
 	}
 		
 	//returns median points of population
 	public Double getMedian(ArrayList<Integer> orderedCandidates) {
+		if(orderedCandidates.size() == 1) return (double)(orderedCandidates.get(0));
 		if(orderedCandidates.size()%2!=0) {
 			return (double) (orderedCandidates.get(orderedCandidates.size()/2));
 		}else {
@@ -205,6 +207,8 @@ public class Algorithm {
 	
 	//returns percentile of candidate 
 	public double getPercentile(Integer candidate, ArrayList<Integer> orderedCandidates) {
+		//if there's only one candidate they are accepted if they meet basic qualifications
+		if(orderedCandidates.size() == 1) return 1.0;
 		int index = orderedCandidates.indexOf(candidate);
 		return (double)(index/orderedCandidates.size());
 	}
