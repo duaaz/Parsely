@@ -31,11 +31,9 @@ public class Client {
 	    String weight = scanner.next();
 	    // pass weight into assess
 	    System.out.println("Type in all the file names of candidate resumes you wish to consider, separated by commas: ");
-<<<<<<< HEAD
-=======
+
 	    //will need to figure out how to do scanner.nextLine() eventually
->>>>>>> 76204302500cd7231306f170019b95455130bf00
-	    String allResumeNames = scanner.next();
+	    String allResumeNames = scanner.nextLine();
 	    String[] allNamesSplit = allResumeNames.split(", ");
 	    for (String name : allNamesSplit) {
 	    	Resume candidate = new Resume(new File(name));

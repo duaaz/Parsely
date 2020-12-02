@@ -51,8 +51,13 @@ public class Resume {
       //initalizing the Set of keywords in which we will be returning later 
       this.keyWords = new TreeSet<String>();
       while(scanner.hasNext()) {
-         String word = scanner.next();
-         this.keyWords.add(word);
+         String word = normalize(scanner.next());
+         try {   
+            Integer.parseInt(word);
+            //in a try catch, the exception is an object  
+         } catch (NumberFormatException e) {
+            this.keyWords.add(word);
+         }
       }
       this.experience = new TreeMap<String, Integer>();
       this.months = new ArrayList<String>();	      
@@ -105,38 +110,33 @@ public class Resume {
             //this is how we are going to find the time 
             //associated with each word on one line of the code  
             if (months.contains(word)) {
-               String startMonth = word;
-               int startYear = newScan.nextInt();
-               //we will think about what to do with a to or a - (always a -, or can it be a to/from, and etc.)  
-               newScan.next(); //throws away the dash in the text 
-               String endMonth = newScan.next();
-               int endYear = 0;
-               if (endMonth.equalsIgnoreCase("present")){
-                  //endMonth = String.format("%d", Calendar.MONTH);
-                  //Date date = new Date();
-                  Calendar calendar = new GregorianCalendar();
-                  endMonth = months.get(calendar.get(calendar.MONTH));
-                  endYear = calendar.get(calendar.YEAR);  
-               } else {  
-                  endMonth = endMonth.substring(0, 3);
-                  endYear = newScan.nextInt();
-               }
-               totalMonths += (endYear - startYear) * 12;
-               //approx 30 days for each month, we can figure this out later as well
-               totalMonths += months.indexOf(endMonth) - months.indexOf(startMonth);
+               totalMonths = calculateMonths(word, newScan);
             } else {
                foundWords.add(word);
             }
         }
+       
         for (String keyWord : foundWords) {
-           if (!experience.containsKey(keyWord)) {
-              experience.put(keyWord, 0);
+           try { 
+              //if it is not an interger, it will throw an exeception, number format exception
+              //parseInt, if you are able to parse it, you will not do anything with it 
+              //so if you don't run into an error, you will do what is in the try block, else you do
+              //whatever was in the catch block  
+              
+              //catch, what you want to have happen when the exceptions in the try block occur  
+              //block is a term used to say everything inside along with the corresponding curly braces  
+              Integer.parseInt(keyWord);
+           //in a try catch, the exception is an object  
+           } catch (NumberFormatException e) {
+              if (!experience.containsKey(keyWord)) {
+                 experience.put(keyWord, 0);
+              }
+              //for each of the words that were in that one line
+              //we will add the additional time
+              //but, we do not want to add the time to every word found,
+              //unless if it was on the line  
+              experience.put(keyWord, experience.get(keyWord) + totalMonths);
            }
-           //for each of the words that were in that one line
-           //we will add the additional time
-           //but, we do not want to add the time to every word found,
-           //unless if it was on the line  
-           experience.put(keyWord, experience.get(keyWord) + totalMonths);
         }
       }
       //this is to remove all the cases where the experience is just 0  
@@ -161,6 +161,30 @@ public class Resume {
       return word;
    }
    
+   public int calculateMonths(String word, Scanner newScan) {
+      int totalMonths = 0;
+      String startMonth = word;
+      int startYear = newScan.nextInt();
+      //we will think about what to do with a to or a - (always a -, or can it be a to/from, and etc.)  
+      newScan.next(); //throws away the dash in the text 
+      String endMonth = newScan.next();
+      int endYear = 0;
+      if (endMonth.equalsIgnoreCase("present")){
+         //endMonth = String.format("%d", Calendar.MONTH);
+         //Date date = new Date();
+         Calendar calendar = new GregorianCalendar();
+         endMonth = months.get(calendar.get(calendar.MONTH));
+         endYear = calendar.get(calendar.YEAR);  
+      } else {  
+         endMonth = endMonth.substring(0, 3);
+         endYear = newScan.nextInt();
+      }
+      totalMonths += (endYear - startYear) * 12;
+      //approx 30 days for each month, we can figure this out later as well
+      totalMonths += months.indexOf(endMonth) - months.indexOf(startMonth);
+      return totalMonths;
+   }
+    
    // we want to figure out, are we going to be returning how many sets...
    public Map<String, Set<String>> containsWanted(Map<String, Set<String>> keyWord) {
       Map<String, Set<String>> foundKeyWords = new TreeMap<String, Set<String>>();
