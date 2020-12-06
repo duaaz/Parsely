@@ -5,7 +5,8 @@ public class Checker {
 
    public static void main(String[] args) throws FileNotFoundException {
       Scanner console = new Scanner(System.in);
-      Resume Bob = new Resume(new File("BobBuilderResume"));
+      
+      Resume Bob = new Resume(new File("BobBuilderResume.txt"));
       Map<String, Integer> experience = new TreeMap<String, Integer>();
       experience = Bob.getExperience();
       System.out.print("Potential canidates name: ");

@@ -26,19 +26,12 @@ public class Client {
 	    }
 	
 	    System.out.println("Do you value experience, skills, or both equally in a candidate?");
-	    //assess(Resume candidate, HashSet<String> desiredSkills, String weight)
+	
 	    System.out.print("Type 'experience', 'skills', or 'equal': ");
-	    String weight = scanner.next();
-	    // pass weight into assess
+	    String weight = scanner.nextLine();
+	 
 	    System.out.println("Type in all the file names of candidate resumes you wish to consider, separated by commas: ");
-<<<<<<< HEAD
-
-	    //will need to figure out how to do scanner.nextLine() eventually
-=======
-	    scanner.nextLine();
-	    //will need to figure out how to do scanner.nextLine() eventually
-	    //Scanner scanner2 = new Scanner(System.in);
->>>>>>> 7feb3d2fb67ae83f3904672898cf23d14d6a9f0b
+	    
 	    String allResumeNames = scanner.nextLine();
 	    String[] allNamesSplit = allResumeNames.split(", ");
 	    for (String name : allNamesSplit) {
