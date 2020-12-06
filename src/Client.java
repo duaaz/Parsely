@@ -43,25 +43,17 @@ public class Client {
 	    
 		Algorithm evaluating = new Algorithm(candidates, basicKeyWords, desiredKeyWords, weight);
 	    evaluating.evaluate(candidates);
-	    System.out.print("Would you like to print it out evaluation results for candidates individually, as a group, or both? ");
+	    System.out.print("Would you like to print it out evaluation results for candidates individually, or as a group? ");
 	    String howToPrint = scanner.nextLine();
+	    System.out.println();
 	    if (howToPrint.equals("individually")) {
 	    	for (Resume cand : candidates) {
 	    		evaluating.printIndvResult(cand);
 	    	}
-	    } else if (howToPrint.equals("group")) {
-	    	evaluating.printAllResults();
 	    } else {
 	    	System.out.println("Group Results");
 	    	evaluating.printAllResults();
-	    	System.out.println();
-	    	System.out.println("Individual Results");
-	    	for (Resume cand : candidates) {
-	    		evaluating.printIndvResult(cand);
-	    	}
-	    	
 	    }
-
 	}
 
 }

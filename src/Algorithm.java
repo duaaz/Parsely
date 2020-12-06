@@ -149,6 +149,7 @@ public class Algorithm {
 			}
 			System.out.println("Points: " + acceptance.get(candidate).getTotalPoints());
 			System.out.println("Percentile: " + acceptance.get(candidate).getPercentile());
+			System.out.println();
 		}
 		printCurve();
 	}
