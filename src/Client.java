@@ -1,8 +1,9 @@
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.io.*;
 public class Client {
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException, InterruptedException {
 		// TODO Auto-generated method stub
 		HashSet<Resume> candidates = new HashSet<>();
 		HashSet<String> basicKeyWords = new HashSet<>();
@@ -46,9 +47,12 @@ public class Client {
 	    System.out.print("Would you like to print it out evaluation results for candidates individually, or as a group? ");
 	    String howToPrint = scanner.nextLine();
 	    System.out.println();
+	    System.out.println("Individual Results");
 	    if (howToPrint.equals("individually")) {
 	    	for (Resume cand : candidates) {
 	    		evaluating.printIndvResult(cand);
+	    		System.out.println();
+	    		TimeUnit.SECONDS.sleep(10);
 	    	}
 	    } else {
 	    	System.out.println("Group Results");
