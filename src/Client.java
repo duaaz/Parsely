@@ -31,14 +31,9 @@ public class Client {
 	    String weight = scanner.next();
 	    // pass weight into assess
 	    System.out.println("Type in all the file names of candidate resumes you wish to consider, separated by commas: ");
-<<<<<<< HEAD
-
-	    //will need to figure out how to do scanner.nextLine() eventually
-=======
 	    scanner.nextLine();
 	    //will need to figure out how to do scanner.nextLine() eventually
 	    //Scanner scanner2 = new Scanner(System.in);
->>>>>>> 7feb3d2fb67ae83f3904672898cf23d14d6a9f0b
 	    String allResumeNames = scanner.nextLine();
 	    String[] allNamesSplit = allResumeNames.split(", ");
 	    for (String name : allNamesSplit) {
@@ -49,7 +44,7 @@ public class Client {
 		Algorithm evaluating = new Algorithm(candidates, basicKeyWords, desiredKeyWords, weight);
 	    evaluating.evaluate(candidates);
 	    System.out.print("Would you like to print it out evaulation results for candidates individually, as a group, or both? ");
-	    String howToPrint = scanner.nextLine();
+	    String howToPrint = scanner.next();
 	    if (howToPrint.equals("individually")) {
 	    	for (Resume cand : candidates) {
 	    		evaluating.printIndvResult(cand);
