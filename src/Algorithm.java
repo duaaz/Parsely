@@ -82,7 +82,7 @@ public class Algorithm {
 				Resume candidate = itr.next();
 				if(!qualify(basicSkills, candidate)) {
 					//just give 0 points if don't even meet basic qualifications 
-					evaluation.put(candidate, new Decision(false, 0.0, 0));
+					evaluation.put(candidate, new Decision(false, 0.0, 0, "Doesn't meet basic skills"));
 					itr.remove();
 				}
 			}
@@ -94,7 +94,7 @@ public class Algorithm {
 			}
 			//sort from least to most total points, with points as they key 
 			TreeMap<Integer, Resume> tempOrderedCandidates = new TreeMap<>(candidatePoints);
-			if(tempOrderedCandidates != null) {
+			if(!tempOrderedCandidates.isEmpty()) {
 				//array list of total points in order for calculating statistics 
 				//sorted an array list in this manner because don't know how to sort a set
 				ArrayList<Integer> orderedPoints = new ArrayList<>();
@@ -113,9 +113,10 @@ public class Algorithm {
 					Double percent = getPercentile(points, orderedPoints);
 					Resume candidate = tempOrderedCandidates.get(points);
 					//give each candidate a decision
-					Decision temp = new Decision(false, percent, totalPoints);
+					Decision temp = new Decision(false, percent, totalPoints, "");
 					if(percent < 0.5) {
 						//if less than 50%, candidate is rejected
+						temp.setExplanation("Less qualified than 50% of candidate pool");
 						evaluation.put(candidate, temp);
 					}else {
 						//only accept candidate if they are better than 50%
@@ -124,6 +125,8 @@ public class Algorithm {
 					}
 				}
 			}
+		}else {
+			System.out.println("No candidates meet basic skills requirement");
 		}
 		return evaluation; 
 	}
@@ -142,7 +145,9 @@ public class Algorithm {
 				System.out.println("Candidate was accepted");
 			}else {
 				System.out.println("Candidate was rejected");
+				System.out.println("Explanation: " + acceptance.get(candidate).getExplanation());
 			}
+			System.out.println("Points: " + acceptance.get(candidate).getTotalPoints());
 			System.out.println("Percentile: " + acceptance.get(candidate).getPercentile());
 		}
 		printCurve();
@@ -155,6 +160,7 @@ public class Algorithm {
 			System.out.println("Candidate was accepted");
 		}else {
 			System.out.println("Candidate was rejected");
+			System.out.println("Explanation: " + acceptance.get(candidate).getExplanation());
 		}
 		System.out.println("Percentile: " + acceptance.get(candidate).getPercentile());
 		//need getKeyWords method 
@@ -180,8 +186,8 @@ public class Algorithm {
 		if(orderedCandidates.size()%2!=0) {
 			return (double) (orderedCandidates.get(orderedCandidates.size()/2));
 		}else {
-			int m1 = orderedCandidates.get(orderedCandidates.size()/2);
-			int m2 = orderedCandidates.get((orderedCandidates.size()/2)+1);
+			int m1 = orderedCandidates.get(orderedCandidates.size()/2-1);
+			int m2 = orderedCandidates.get((orderedCandidates.size()/2));
 			return (m1+m2)/2.0;
 		}	
 	}
@@ -209,8 +215,8 @@ public class Algorithm {
 	public double getPercentile(Integer candidate, ArrayList<Integer> orderedCandidates) {
 		//if there's only one candidate they are accepted if they meet basic qualifications
 		if(orderedCandidates.size() == 1) return 1.0;
-		int index = orderedCandidates.indexOf(candidate);
-		return (double)(index/orderedCandidates.size());
+		double index = orderedCandidates.indexOf(candidate);
+		return (double)(index/(orderedCandidates.size()-1));
 	}
 	
 }

@@ -3,11 +3,13 @@ public class Decision {
 	private boolean acceptance;
 	private double percentile;
 	private int totalPoints;
+	private String explanation;
 	
-	public Decision(boolean newAcceptance, double newPercentile, int newTotalPoints) {
+	public Decision(boolean newAcceptance, double newPercentile, int newTotalPoints, String newEx) {
 		acceptance = newAcceptance;
 		percentile = newPercentile;
 		totalPoints = newTotalPoints;
+		explanation = newEx;
 	}
 	
 	public void setAcceptance(boolean newDecision) {
@@ -32,5 +34,13 @@ public class Decision {
 	
 	public int getTotalPoints() {
 		return totalPoints;
+	}
+	
+	public void setExplanation(String newExplain) {
+		explanation = newExplain;
+	}
+	
+	public String getExplanation() {
+		return explanation;
 	}
 }

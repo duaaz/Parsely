@@ -17,16 +17,21 @@ public class BellCurve {
 	}
 	
 	 public void plot() {
+		 	double offset = 0.01;
+		 	double y = 0.1;
+		 	 if(avg > 150 || stndDev > 100) {
+		 		 y = 0.5;
+		 	 }
 		 	StdDraw.setCanvasSize(600, 800);
 	        StdDraw.setXscale(min, max);
 	        StdDraw.setYscale(0, 0.1);
-	        StdDraw.text(avg, 0.01, "Candidate Total Points");
+	        StdDraw.text(avg, (offset), "Candidate Total Points");
 	        StdDraw.setPenRadius(0.015);
 	        StdDraw.setPenColor(153, 204, 153);
-	        for (double x = min-10; x <= max+10; x += 0.1) {
-	            StdDraw.point(x, 0.015+pdf(x,avg,stndDev));
-	            if(Math.abs(x%stndDev) < 0.1) {
-	            	StdDraw.text(x, 0.013, (int)(x) + " ");
+	        for (double x = min-10; x <= max+10; x += y) {
+	            StdDraw.point(x, ((offset)+0.005)+pdf(x,avg,stndDev));
+	            if(Math.abs(x%stndDev) < y) {
+	            	StdDraw.text(x, ((offset)+0.003), (int)(x) + " ");
 	            }
 	        }
 	 }
@@ -54,8 +59,8 @@ public class BellCurve {
 	 
 	 //get rid of this at the end
 	 /*public static void main(String[] args) {
-	        BellCurve newOne1 = new BellCurve(105, 19);
+	        BellCurve newOne1 = new BellCurve(124, 21);
 	        newOne1.plot();
-	        newOne1.plotIndvCandidate(124, "Bob");
+	        newOne1.plotIndvCandidate(147.5, "Bob");
 	 }*/
 }

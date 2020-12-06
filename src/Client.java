@@ -15,14 +15,14 @@ public class Client {
 	    String allReqSkills = scanner.nextLine();
 	    String[] allReqSkillsSplit = allReqSkills.split(", ");
 	    for (String reqSkill : allReqSkillsSplit) {
-	    	basicKeyWords.add(reqSkill);
+	    	basicKeyWords.add(reqSkill.toLowerCase());
 	    }
 	    // Asking for the desired but not required skills for the candidate resume
 	    System.out.print("Please type in desired (but not required) skills for each candidate separated by commas (ex: 'Figma, JavaScript'): ");
 	    String allDesSkills = scanner.nextLine();
 	    String[] allDesSkillsSplit = allDesSkills.split(", ");
 	    for (String desSkill : allDesSkillsSplit) {
-	    	desiredKeyWords.add(desSkill);
+	    	desiredKeyWords.add(desSkill.toLowerCase());
 	    }
 	
 	    System.out.println("Do you value experience, skills, or both equally in a candidate?");
@@ -43,7 +43,7 @@ public class Client {
 	    
 		Algorithm evaluating = new Algorithm(candidates, basicKeyWords, desiredKeyWords, weight);
 	    evaluating.evaluate(candidates);
-	    System.out.print("Would you like to print it out evaulation results for candidates individually, as a group, or both? ");
+	    System.out.print("Would you like to print it out evaluation results for candidates individually, as a group, or both? ");
 	    String howToPrint = scanner.nextLine();
 	    if (howToPrint.equals("individually")) {
 	    	for (Resume cand : candidates) {
