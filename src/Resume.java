@@ -23,7 +23,7 @@ public class Resume {
    //name of the person who wrote the resume  
    private String name;
    //this most likely will just tell you all the words it contains
-   private Set<String> keyWords;
+   private HashSet<String> keyWords;
    //<Keyword, Experience>
    private Map<String, Integer> experience; 
    //these are the months in the years, and they are abbreviated  
@@ -71,7 +71,7 @@ public class Resume {
       return this.name;
    }
    
-   public Set<String> getKeyWords() {
+   public HashSet<String> getKeyWords() {
       return keyWords;
    }
    

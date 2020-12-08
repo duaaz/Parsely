@@ -31,6 +31,13 @@ public class Client {
 	    System.out.print("Type 'experience', 'skills', or 'equal': ");
 	    String weight = scanner.next();
 	    // pass weight into assess
+	    System.out.print("Would you like to 'type' in all the file names of Resumes you're considering or 'read' them in from a file where they are separated by commas?: ");
+	    String response = scanner.nextLine();
+	    System.out.println();
+	    if(response.equals("type")) {
+	    	
+	    }
+	    
 	    System.out.println("Type in all the file names of candidate resumes you wish to consider, separated by commas: ");
 	    scanner.nextLine();
 	    //will need to figure out how to do scanner.nextLine() eventually

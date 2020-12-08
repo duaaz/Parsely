@@ -165,8 +165,20 @@ public class Algorithm {
 		}
 		System.out.println("Percentile: " + acceptance.get(candidate).getPercentile());
 		//need getKeyWords method 
-		System.out.println("Main Skills: " + candidate.getKeyWords().toString());
+		HashSet<String> candKeys = candidate.getKeyWords();
+		candKeys = filter(candKeys);
+		System.out.println("Main Skills: " + candKeys.toString());
 		printIndvCurve(candidate);
+	}
+	
+	public HashSet<String> filter(HashSet<String> allSkills) {
+		HashSet<String> res = new HashSet<>();
+		for (String skill : allSkills) {
+			if (basicSkills.contains(skill) || desiredSkills.contains(skill)) {
+				res.add(skill);
+			}
+		}
+		return res;
 	}
 	
 	//prints out overall bell curve of population 
