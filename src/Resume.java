@@ -23,7 +23,7 @@ public class Resume {
    //name of the person who wrote the resume  
    private String name;
    //this most likely will just tell you all the words it contains
-   private HashSet<String> keyWords;
+   private Set<String> keyWords;
    //<Keyword, Experience>
    private Map<String, Integer> experience; 
    //these are the months in the years, and they are abbreviated  
@@ -44,7 +44,7 @@ public class Resume {
       this.name = firstName + " " + lastName; 
       this.resumeData = file;
       //initalizing the Set of keywords in which we will be returning later 
-      this.keyWords = new TreeSet<String>();
+      this.keyWords = new HashSet<String>();
       while(scanner.hasNext()) {
          String word = normalize(scanner.next());
          try {   
@@ -72,7 +72,7 @@ public class Resume {
    }
    
    public HashSet<String> getKeyWords() {
-      return keyWords;
+      return (HashSet<String>) keyWords;
    }
    
    //this will check to see if all of the words are contained within your keyWords needed map  

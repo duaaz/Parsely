@@ -8,7 +8,7 @@ public class Client {
 		HashSet<Resume> candidates = new HashSet<>();
 		HashSet<String> basicKeyWords = new HashSet<>();
 		HashSet<String> desiredKeyWords = new HashSet<>();
-		
+
 	    System.out.println("Hello technical recruiter!");
 	    Scanner scanner = new Scanner(System.in);
 	    // Asking for the basic (required) skills for the candidate resume
@@ -31,13 +31,13 @@ public class Client {
 	    System.out.print("Type 'experience', 'skills', or 'equal': ");
 	    String weight = scanner.next();
 	    // pass weight into assess
-	    System.out.print("Would you like to 'type' in all the file names of Resumes you're considering or 'read' them in from a file where they are separated by commas?: ");
-	    String response = scanner.nextLine();
-	    System.out.println();
-	    if(response.equals("type")) {
+	   // System.out.print("Would you like to 'type' in all the file names of Resumes you're considering or 'read' them in from a file where they are separated by commas?: ");
+	    //String response = scanner.nextLine();
+	   // scanner.nextLine();
+	    //System.out.println();
+	    //if(response.equals("type")) {
 	    	
-	    }
-	    
+	   // }
 	    System.out.println("Type in all the file names of candidate resumes you wish to consider, separated by commas: ");
 	    scanner.nextLine();
 	    //will need to figure out how to do scanner.nextLine() eventually
@@ -54,8 +54,8 @@ public class Client {
 	    System.out.print("Would you like to print it out evaluation results for candidates individually, or as a group? ");
 	    String howToPrint = scanner.nextLine();
 	    System.out.println();
-	    System.out.println("Individual Results");
 	    if (howToPrint.equals("individually")) {
+	    	System.out.println("Individual Results");
 	    	for (Resume cand : candidates) {
 	    		evaluating.printIndvResult(cand);
 	    		System.out.println();

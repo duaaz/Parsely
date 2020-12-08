@@ -166,8 +166,8 @@ public class Algorithm {
 		System.out.println("Percentile: " + acceptance.get(candidate).getPercentile());
 		//need getKeyWords method 
 		HashSet<String> candKeys = candidate.getKeyWords();
-		candKeys = filter(candKeys);
-		System.out.println("Main Skills: " + candKeys.toString());
+		HashSet<String> temp = filter(candKeys);
+		System.out.println("Main Skills: " + temp.toString());
 		printIndvCurve(candidate);
 	}
 	
