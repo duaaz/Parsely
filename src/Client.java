@@ -31,22 +31,29 @@ public class Client {
 	    System.out.print("Type 'experience', 'skills', or 'equal': ");
 	    String weight = scanner.next();
 	    // pass weight into assess
-	   // System.out.print("Would you like to 'type' in all the file names of Resumes you're considering or 'read' them in from a file where they are separated by commas?: ");
-	    //String response = scanner.nextLine();
-	   // scanner.nextLine();
-	    //System.out.println();
-	    //if(response.equals("type")) {
-	    	
-	   // }
-	    System.out.println("Type in all the file names of candidate resumes you wish to consider, separated by commas: ");
+	    System.out.print("Would you like to 'type' in all the file names of Resumes you're considering or 'read' them in from a file where they are listed line-by-line?: ");
+	    String response = scanner.nextLine();
 	    scanner.nextLine();
-	    //will need to figure out how to do scanner.nextLine() eventually
-	    //Scanner scanner2 = new Scanner(System.in);
-	    String allResumeNames = scanner.nextLine();
-	    String[] allNamesSplit = allResumeNames.split(", ");
-	    for (String name : allNamesSplit) {
-	    	Resume candidate = new Resume(new File(name));
-	    	candidates.add(candidate);
+	    System.out.println();
+	    if(response.equals("read")) {
+	    	System.out.println("Type in the name of the file that lists all the resume file names: ");
+	    	scanner.nextLine();
+	    	String fileName = scanner.next();
+	    	Scanner fileScan = new Scanner(new File(fileName));
+	    	while(fileScan.hasNext()) {
+	    		String currentName = fileScan.next();
+		    	Resume candidate = new Resume(new File(currentName));
+		    	candidates.add(candidate);
+	    	}
+	    } else {
+		    System.out.println("Type in all the file names of candidate resumes you wish to consider, separated by commas: ");
+		    scanner.nextLine();
+		    String allResumeNames = scanner.nextLine();
+		    String[] allNamesSplit = allResumeNames.split(", ");
+		    for (String name : allNamesSplit) {
+		    	Resume candidate = new Resume(new File(name));
+		    	candidates.add(candidate);
+		    }
 	    }
 	    
 		Algorithm evaluating = new Algorithm(candidates, basicKeyWords, desiredKeyWords, weight);

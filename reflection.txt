@@ -1,0 +1,16 @@
+	During the course of creating Parsely, we learned how to download and implement the StDraw pack, which is an external library we used 
+to create. graphical interfaces. We worked on rewriting parts of the library to match the specific purposes we needed the code to work
+for, which in our case meant for creating bell curves to represent where the candidates stood compared to other ones in their resume 
+group. We also learned how to use Github via the Command Prompt and Desktop app, as well as how to revert Github commits, which is 
+something we had never been able to do successfully before this project. Through this process, we also got much better at working 
+collaboratively on a single project in the remote learning environment. We thoroughly enjoyed debugging our code together to get it to run
+successfully, sharing ideas together to reach working solutions and optimize our program, and also having the flexibility to get creative 
+with our project and work on something we all found would help our learning. 
+	The most challenging and frustrating aspects of this project revolved around working with the Eclipse IDE, because we hadn’t worked 
+with it since high school, and sometimes we’d run into errors where older versions of our code were compiling instead of new ones. 
+Another problem was working with GitHub and running into merge conflicts, which often happened if more than one of us made changes 
+to the same Class or or other text file. Another issue we had was not having enough foresight into the design process to make sure 
+that each class we work on separately would merge successfully once all put together. To resolve any conflicts we had, we worked on 
+organizing fields and methods to successfully and efficiently work with one another. We found it helpful to touch base constantly with
+team members on every small update and meet up consistently when we would usually have class time, so we could work through any of our
+problems together more efficiently and quickly. 
