@@ -62,7 +62,7 @@ public class Client {
 	    	for (Resume cand : candidates) {
 	    		evaluating.printIndvResult(cand);
 	    		System.out.println();
-	    		TimeUnit.SECONDS.sleep(10);
+	    		TimeUnit.SECONDS.sleep(5);
 	    	}
 	    } else {
 	    	System.out.println("Group Results");

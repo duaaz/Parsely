@@ -75,6 +75,7 @@ public class Algorithm {
 	//make another object instead 
 	public HashMap<Resume, Decision> evaluate(HashSet<Resume> potCandidates) throws FileNotFoundException{
 		HashMap<Resume, Decision> evaluation = new HashMap<>();
+		HashSet<Resume> tempCands = new HashSet<>();
 		if(potCandidates != null) {
 			Iterator<Resume> itr = potCandidates.iterator();
 			//reject candidates without basic skills
@@ -83,6 +84,7 @@ public class Algorithm {
 				if(!qualify(basicSkills, candidate)) {
 					//just give 0 points if don't even meet basic qualifications 
 					evaluation.put(candidate, new Decision(false, 0.0, 0, "Doesn't meet basic skills"));
+					tempCands.add(candidate);
 					itr.remove();
 				}
 			}
@@ -127,6 +129,9 @@ public class Algorithm {
 			}
 		}else {
 			System.out.println("No candidates meet basic skills requirement");
+		}
+		for(Resume cand: tempCands) {
+			potCandidates.add(cand);
 		}
 		return evaluation; 
 	}

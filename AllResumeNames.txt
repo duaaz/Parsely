@@ -4,3 +4,6 @@ ElonMuskResume.txt
 SteveJobsResume.txt
 Tom.txt
 WendyBuilderResume.txt
+MeganTheeStallion.txt
+SpongebobSquarepants.txt
+TimotheeChalamet.txt
