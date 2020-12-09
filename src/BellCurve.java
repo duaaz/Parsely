@@ -3,12 +3,12 @@ import java.util.HashSet;
 
 public class BellCurve {
 	//you will need to install the stndDev pack from Princeton 
-	//instructions will be included in the spec
 	private double min;
 	private double max;
 	private double avg;
 	private double stndDev;
 	
+	//constructs bell curve given double average and double standard deviation as parameters
 	public BellCurve(double miu, double sigma) {
 		avg = miu;
 		stndDev = sigma;
@@ -16,6 +16,7 @@ public class BellCurve {
 		max = avg+(3*stndDev);
 	}
 	
+	//plots bell curve on graphical canvas 
 	 public void plot() {
 		 	double offset = 0.01;
 		 	double y = 0.1;
@@ -36,6 +37,7 @@ public class BellCurve {
 	        }
 	 }
 	 
+	 //plots specific candidate poitns against overall bell curve on canvas
 	 public void plotIndvCandidate(double points, String name) {
 		 plot();
 		 StdDraw.setPenColor(StdDraw.BLACK);
@@ -56,11 +58,4 @@ public class BellCurve {
 	 public double pdf(double x, double avg, double stndDev) {
 	        return pdf((x - avg)/stndDev)/ stndDev;
 	    }
-	 
-	 //get rid of this at the end
-	 /*public static void main(String[] args) {
-	        BellCurve newOne1 = new BellCurve(124, 21);
-	        newOne1.plot();
-	        newOne1.plotIndvCandidate(147.5, "Bob");
-	 }*/
 }

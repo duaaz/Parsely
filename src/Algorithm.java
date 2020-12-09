@@ -21,6 +21,8 @@ public class Algorithm {
 	private HashSet<String> desiredSkills;
 	private String weight;
 	
+	//constructs an algorithm object with a HashSet<Resume> of candidates, HashSet<String> of basicSKills, 
+	//HashSet<String> of desiredSkills, and String weight as parameters
 	public Algorithm(HashSet<Resume> newCandidates, HashSet<String> newBasicSkills, HashSet<String> newDesiredSkills, String newWeight) throws FileNotFoundException {
 		basicSkills = newBasicSkills;
 		desiredSkills = newDesiredSkills;
@@ -33,11 +35,15 @@ public class Algorithm {
 		acceptance = this.evaluate(candidates);
 	}
 	
+	//returns boolean of whether or not candidate meets basic requirements
+	//given HashSet<String> of basicSkills, and Resume candidate as parameters 
 	public boolean qualify(HashSet<String> basicSkills, Resume candidate) {
 		if (candidate.getKeyWords().containsAll(basicSkills)) return true;
 		return false;
 	}
 	
+	//returns integer value of total points a candidate earned on their resume
+	//given a Resume candidate, a HashSet<String> of desired skills, and String weight as parameters
 	public Integer assess(Resume candidate, HashSet<String> desiredSkills, String weight) throws FileNotFoundException {
 		int totalPoints = 0;
 		Set<String> skills = candidate.getKeyWords();
@@ -71,8 +77,8 @@ public class Algorithm {
 	
 	//determines if candidate is rejected/accepted
 	//if candidate is less than 50% percentile, they are rejected (can potentially let recruiter enter method)
-	//puts results in a HashMap 
-	//make another object instead 
+	//takes in HashSet<Resume> of candidates as parameter
+	//returns results in a HashMap<Resume, Decision>
 	public HashMap<Resume, Decision> evaluate(HashSet<Resume> potCandidates) throws FileNotFoundException{
 		HashMap<Resume, Decision> evaluation = new HashMap<>();
 		HashSet<Resume> tempCands = new HashSet<>();
@@ -104,7 +110,6 @@ public class Algorithm {
 				for(Integer points: tempOrderedCandidates.keySet()) {
 					orderedPoints.add(points);
 				}
-				//little sketch to be calculating fields here but I think it should be ok
 				median = getMedian(orderedPoints);
 				stndDev = getStandardDev(orderedPoints, median);
 				avg = getAverage(orderedPoints);
@@ -169,13 +174,14 @@ public class Algorithm {
 			System.out.println("Explanation: " + acceptance.get(candidate).getExplanation());
 		}
 		System.out.println("Percentile: " + acceptance.get(candidate).getPercentile());
-		//need getKeyWords method 
 		HashSet<String> candKeys = candidate.getKeyWords();
 		HashSet<String> temp = filter(candKeys);
 		System.out.println("Main Skills: " + temp.toString());
 		printIndvCurve(candidate);
 	}
 	
+	//returns HashSet<String> of candidate keywords that are also contained in the desiredSkills set
+	//takes in HashSet<String> of skills as parameter
 	public HashSet<String> filter(HashSet<String> allSkills) {
 		HashSet<String> res = new HashSet<>();
 		for (String skill : allSkills) {
