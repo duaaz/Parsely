@@ -8,7 +8,6 @@ public class Client {
 		HashSet<Resume> candidates = new HashSet<>();
 		HashSet<String> basicKeyWords = new HashSet<>();
 		HashSet<String> desiredKeyWords = new HashSet<>();
-
 	    System.out.println("Hello technical recruiter!");
 	    Scanner scanner = new Scanner(System.in);
 	    // Asking for the basic (required) skills for the candidate resume
@@ -27,27 +26,24 @@ public class Client {
 	    }
 	
 	    System.out.println("Do you value experience, skills, or both equally in a candidate?");
-	    //assess(Resume candidate, HashSet<String> desiredSkills, String weight)
 	    System.out.print("Type 'experience', 'skills', or 'equal': ");
 	    String weight = scanner.next();
-	    // pass weight into assess
 	    System.out.print("Would you like to 'type' in all the file names of Resumes you're considering or 'read' them in from a file where they are listed line-by-line?: ");
-	    String response = scanner.nextLine();
 	    scanner.nextLine();
-	    System.out.println();
+	    String response = scanner.nextLine();
 	    if(response.equals("read")) {
 	    	System.out.println("Type in the name of the file that lists all the resume file names: ");
-	    	scanner.nextLine();
-	    	String fileName = scanner.next();
+	    	String fileName = scanner.nextLine();
 	    	Scanner fileScan = new Scanner(new File(fileName));
 	    	while(fileScan.hasNext()) {
 	    		String currentName = fileScan.next();
 		    	Resume candidate = new Resume(new File(currentName));
 		    	candidates.add(candidate);
 	    	}
+	    	fileScan.close();
 	    } else {
 		    System.out.println("Type in all the file names of candidate resumes you wish to consider, separated by commas: ");
-		    scanner.nextLine();
+		    //scanner.nextLine();
 		    String allResumeNames = scanner.nextLine();
 		    String[] allNamesSplit = allResumeNames.split(", ");
 		    for (String name : allNamesSplit) {
