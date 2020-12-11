@@ -1,0 +1,209 @@
+Design Document + Specifications
+
+<Algorithm Class>
+The main purpose of the algorithm method is to be able to evaluate each candidate, and ultimately decide on whether or not to accept these candidates. 
+We decided to use a points system based on skills to assess the candidates, and we had two tests to evaluate these candidates: whether or not they meet 
+the basic qualifications, and if they were above 50% of the other candidates. 
+
+The Algorithm class has the following fields:
+
+private HashSet<Resume> candidates;
+The candidates HashSet  will store all the potential candidates in this job pool. 
+private HashMap<Resume, Decision> acceptance;
+The acceptance HashMap will store each candidate as the key, and a decision of whether or not they are accepted as the value under the key. 
+private double median;
+private double stndDev;
+private double avg;
+The median, average, and standard deviation will represent the statistics of the overall candidate pool in terms of points. 
+private HashSet<String> basicSkills;
+The basicSkills HashSet will store the basic skills (entered as Strings) that are required for each candidate in terms of the job posting. 
+private HashSet<String> desiredSkills;
+The desiredSkills HashSet will store skills (entered as Strings) that are good to have, but not absolutely required for the job. 
+private String weight;
+The weight will determine whether or not experience, skills, or both are valued equally for the job. The recruiter will enter this decision as a string. 
+
+And the following methods:
+public Algorithm(HashSet<Resume> newCandidates, HashSet<String> newBasicSkills, HashSet<String> newDesiredSkills, String newWeight)
+This will be the constructor to creating an Algorithm object. The constructor will take in a HashSet<Resume> of all the candidates in the pool, 
+a HashSet of Strings representing basic skills required for the job, a HashSet of String representing good skills to have for the job, and a String 
+representing if skills, experience, or both are valued equally for the job. 
+
+public boolean qualify(HashSet<String> basicSkills, Resume candidate)
+The qualify method will return a boolean that represents whether or not the candidate is qualified for the job based on the basic skills. 
+The parameters are the basicSkills String set that represents all the required skills for the job, and the Resume object representing the 
+candidate being judged. If the candidate’s skillset has all the skills in the basicSkills, then the candidate is qualified for the job, and a 
+true boolean will be returned. If the candidate’s skillset does not have all the skills required for the job, then the boolean will be false,
+and the candidate will be rejected. This will be the first barrier of entry for candidates, as candidates that do not meet the basic skillset required 
+will be weeded out first, and they will be assigned a point value of 0 for their resume, and will not be factored into the overall statistics of the 
+candidate pool since they were not even qualified for the job. 
+
+public Integer assess(Resume candidate, HashSet<String> desiredSkills, String weight)
+The assess method will assign all the qualified candidates a point value depending on their resume strengths. The parameters are the candidate 
+themselves, a set of desiredSkills for the job, and the weight deciding if skills, experience, or both are more valued. The method will return 
+an integer value representing the total points that this resume has earned. If the recruiter were to specify that skills and experience are equally 
+valued, then the candidate will earn 1 point for each skill that they have in the desired skillset, and 1 point for each month of their experience 
+that is associated with that particular skill. If the recruiter were to enter that skillset is valued over experience, then the candidate will earn 
+2 points per skill that they have in the desired skillset, and 1 point for each month in experience that is associated with that skill. Finally, if 
+the candidate were to enter that experience is valued over skillset, then the candidate will earn 1 point for each skill in the desired skillset, and 
+2 points for each month in experience associated with that skill. 
+
+public HashMap<Resume, Decision> evaluate(HashSet<Resume> potCandidates)
+The evaluate method will take in a set of all the potential candidates as the parameter, and return a HashMap of each candidate as the key, and whether 
+or not they were accepted/rejected as the value under each key. This method will call both the qualify and assess method, and will also call the median, 
+standard deviation, average, and percentile method calls, so that the client will only need to call the evaluate method to get the important information for 
+the overall candidate pool. Furthermore, we made sure to minimize the parameters so that the client can successfully evaluate all the candidates passing in 
+the least amount of information possible. The evaluate method will run through all the potential candidates, and use the qualify method to weed out the candidates 
+that do not fit the basic skills first. Afterwards, the assess method will be called to assign each candidate a point value. Once all the point values are 
+assigned, a list of all the point values will be passed to the median, average, and standard deviation methods to get the statistics of the overall 
+population. Finally, the percentile method will be called to assign each candidate a percentile based on all the point values, and candidates below the 
+50th percentile will be rejected. Finally, the results of each candidate are stored into the HashMap, and will be returned at the end. 
+
+public void printAllResults()
+The printAllResults method will print out the overall statistics (median, average, standard deviation) of the candidate pool, and list out all 
+the candidate names and their decision (accepted/rejected). This method will also call the printCurve method to print out the overall bell curve 
+for the candidate pool based on the points each candidate earned, and the overall statistics. 
+
+public void printIndvResult(Resume candidate)
+The printIndvResult method will print out the candidate name, their percentile, their decision(accepted/rejected), and the main skills that were 
+parsed in their resume. The parameter for this method will be the candidate whose information will be printed out. Furthermore, this method will 
+also call the prinIndvCurve method to print out the specific candidate’s points plotted against the overall bell curve of the total candidate pool. 
+
+public HashSet<String> filter(HashSet<String> allSkills)
+The filter method will return a HashSet that contains the skills that the candidate has, that are also in the basicSkills or desiredSkills sets. 
+The parameter will be a HashSet of all the skills that the candidate has in their resume. This method will help us assess the candidate’s main strengths 
+in the resume, and throw out skills that are not helpful to our evaluation. 
+
+public void printCurve()
+The printCurve method will plot out a graphical representation of the overall candidate pool based on the median, average, and standard deviation statistics. 
+public void printIndvCurve(Resume candidate)
+The printIndvCurve method will plot out a graphical representation of the overall candidate pool based on the median, average, and standard deviation 
+statistics, and mark where the specific candidate is on the bell curve based on their points. The parameter will need to be the specific candidate that
+we are assessing. 
+
+public Double getMedian(ArrayList<Integer> orderedCandidates)
+The getMedian method will take in an arraylist of integers representing all the different points that each candidate earned in the overall candidate pool, 
+and will return the median value out of the list in the form of a double. 
+
+public Double getAverage(ArrayList<Integer> orderedCandidates)
+The getAverage method will take in an arraylist of integers representing all the points from the candidate pool, and return a double that represents 
+the average calculated from all the points. 
+
+public Double getStandardDev(ArrayList<Integer> orderedCandidates, Double median)
+The getStandardDev method will take in an arraylist of integers representing all the different points that each candidate earned in the overall 
+candidate pool, and will return the standard deviation value out of the list in the form of a double
+
+public double getPercentile(Integer candidate, ArrayList<Integer> orderedCandidates) 
+The getPercentile method will take in an integer representing a specific point value that a candidate earned, 
+and also an arrayList of integers representing all the points earned in the candidate pool. Then the percentile of this specific point value 
+against the rest of the candidate pool will be returned in the form of a double. For this specific percentile calculation, we will be counting 
+how many candidates are below this specific point value. 
+
+<Decision Class>
+There are many aspects to a decision beyond just whether or not the candidate was accepted. We wanted to be able to store these contexts 
+(their percentile, total points earned, and an explanation for their decision) without overcomplicating the algorithm method with multiple data structures, 
+so we decided to make a decision object that will be able to store all of these details for each decision made on the candidate. 
+
+The Decisions class has the following fields:
+private boolean acceptance;
+Boolean representing whether or not the candidate was accepted (true = accepted, false = rejected).
+private double percentile;
+Double representing percentile of particular candidate against candidate pool. 
+private int totalPoints;
+Integer representing total points candidate earned on their resume. 
+private String explanation;
+String explanation of why candidate was rejected (if they did not have basic requirements or underneath 50th percentile). This string is empty if the candidate is accepted 
+
+And the following methods:
+public Decision(boolean newAcceptance, double newPercentile, int newTotalPoints, String newEx)
+The constructor allows for a Decision object to be made with the acceptance boolean, percentile double, total points integer, 
+and explanation string as parameters. 
+public void setAcceptance(boolean newDecision)
+public void setPercentile(double newPercent)
+public void setPoints(int newPoints)
+public void setExplanation(String newExplain) 
+Methods allows other classes to set field values. 
+public boolean getAcceptance()
+public double getPercentile()
+public int getTotalPoints()
+public String getExplanation()
+Methods allow other classes to access these field values. 
+
+<BellCurve Class>
+The purpose of the BellCurve class was to be able to create a graphical representation of all the candidates in the pool based on the 
+point value of the resume. The foundation of our code was based on the Princeton StdDraw pack from a standard library that is open for public use. 
+
+The BellCurve class has the following fields:
+private double min;
+Minimum value in overall data pool. 
+private double max;
+Maximum value in overall data pool. 
+private double avg;
+Average value of overall data pool. 
+private double stndDev;
+Standard deviation of overall data pool. 
+
+And the following methods:
+public BellCurve(double miu, double sigma)
+Allows for creation of BellCurve object given the average as a double, and the standard deviation as a double, for the parameters. 
+public void plot()
+Creates a canvas using the StdDraw pack, and graphically plots x and y data points on the canvas. This will allow for the plotting of 
+the bell curve using the Gaussian probability density function formula given the standard deviation and average. 
+public void plotIndvCandidate(double points, String name)
+Creates a canvas using the StdDraw pack, and graphically plots x and y data points on the canvas.This will allow for the plotting of 
+the bell curve using the Gaussian probability density function formula given the standard deviation and average. This method will also 
+mark a particular point on the bell curve, and print out the name associated with the points given the parameters of the points as a double, 
+and the name as a String.
+public double pdf(double x)
+Returns the probability density as a double calculated given the x value in the parameter. This uses the Gaussian probability density function formula. 
+public double pdf(double x, double avg, double stndDev)
+Returns the probability density as a double calculated given the x value in the parameter, and also the average and standard deviation as doubles given.
+This uses the Gaussian probability density function formula. 
+
+<Client Class>
+The Client Class was designed primarily as a platform for the recruiter to interact with. It has 3 fields: HashSet<Resume> candidates, 
+HashSet<String> basicKeyWords, and HashSet<String> desiredKeyWords. The recruiter is prompted to type in a list of basic (required) skills for the 
+job position, followed by a list of desired (but not required) skills that set candidates apart. The basic keywords make up the basicKeyWords field and 
+the desired keywords make up the desiredKeyWords field. The recruiter is then asked if they prefer to weigh skills more, length of relevant experience 
+more, or both equally when considering candidates. Following this, they are given the option to either type in a list (separated by commas) of resume file
+names they are considering or enter in the name of a text file with the resumes listed similarly. After that, a new Algorithms object is created 
+through the list of resume candidates, the basic keywords, the desired keywords, and the weight option the recruiter chose for experience length vs. skills. 
+This set of candidates is evaluated and the recruiter can either choose to print the results of each candidate individually or receive the group statistics 
+of all of them as a whole and how many "points" were earned for candidates in the process of evaluation. For the individual evaluation, bell curve graphics 
+pop for each resume and place the candidate on the curve using an 'x' and the candidate name based on the group points mean, range and standard deviation. 
+This way, a recruiter can easily see where the candidate falls in comparison to other candidates within the group. 
+
+<Resume Class> 
+The resume object will allow us to document all of the necessary parts of a resume. Our Parsely tools main function is to check to see 
+if a person has the needed keywords from an employer, and to also associate points with the given experience of each of the keywords in which 
+the person has in their resume. For our group, we decided that we needed to have a map in which associated each of the keywords with a given amount of time. 
+We also decided to not include keywords that had 0 time associated with it or integers in which the scanner may have found. Lastly, we decided that the 
+resume object would be able to return all of the keywords found in the resume, so that if another class needed to find some keywords from a resume, they 
+could find the keywords in our resume. 
+ 
+Specifications for the Resume object 
+Required fields:
+Private String name - we will need this in order to keep track of each of the resumes candidates names
+Private Set<String> keywords - this will keep track of all of the keywords in the resume that are non-numerical
+Private Map<String, Integer> keyWords - this will give you all of the keywords with the associated amount of time for each of the keywords
+Private ArrayList<String> months - this will be all of the months in which will be in the resumes which we will be given
+Private Scanner scanner - this will allow us to look through all of the information in each of the resumes
+Private File resumeData - this is the resume in which we will be looking at, which will represent the data for the resume object in which we will be creating
+ 
+Our getter methods:
+Public String getName() - this will get you the name of the candidate
+Public Set<String> keyWords() - this will get you the keyWords of the resume, which are also non-numerical
+ 
+Main methods:
+Public Map<String, Integer> getExperience() - for this method we will be getting the total experience associated with each keyword. 
+The way how the experience will be calculated is by looking at each of the keywords on each line, and seeing the amount of time associated with it, 
+by looking at the period of time in a resume for each of the lines. Usually the period time will be represented by Jan 2019 - Sep 2025 for example, 
+and this is the format for the time in which we will be using for each line. Also, we will be ignoring keywords that have 0 time/experience associated 
+with it, and we will also not include years or numbers as keywords. 
+(Note: we also had a method that was meant to read different formats for dates, but it is currently postponed due to time)
+Public String normalize – this will allow you to get rid of any ending non-characters.
+For example, you might have a case where you have a keyword from a scanner as
+Bellevue,
+With the normalize method, we will turn it into
+Bellevue
+Public int calculateMonths - for our calculate months method, we are able to calculate the total time associated with each of the lines in the resume. We do this by getting the beginning month and year, and the ending month and year, and from there we will calculate the total amount of months associated with each line with our given month calculating algorithm 
+Public Map<String, Set<String>> containsWanted - for this method, we will be checking to see if a set of certain word types show up, such as nouns and verbs, and see if the associated words for each of the word Types show up, for example, for nouns – car, bird, truck. We will check to see if the words are contained in the keyWords of the resume, and if they are we will return a Map<String, Set<String>> of all of the found words.  

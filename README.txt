@@ -1,3 +1,7 @@
+Allison Li, Davin Kyi, Duaa Zaheer
+CSE143 D Final Project
+Parsely User Guide
+
 	To develop Parsely, we used the Eclipse Integrated Development Environment (IDE) to write, store, and compile our code. Using Github, we were able
 to work collaboratively. Our code repository can be found at https://github.com/duaaz/Parsely. You will need to clone this repository with all our 
 files onto your computer. To properly display some of the graphical interfaces (bell curves) included in our project, you will also need to  download
