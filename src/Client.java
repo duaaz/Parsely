@@ -34,7 +34,7 @@ public class Client {
 	    String response = scanner.nextLine();
 	    if(response.equals("read")) {
 	    	// AllResumeNames.txt can be entered here
-	    	System.out.println("Type in the name of the file that lists all the resume file names: ");
+	    	System.out.print("Type in the name of the file that lists all the resume file names: ");
 	    	String fileName = scanner.nextLine();
 	    	Scanner fileScan = new Scanner(new File(fileName));
 	    	while(fileScan.hasNext()) {
