@@ -14,7 +14,7 @@ that each class we work on separately would merge successfully once all put toge
 organizing fields and methods to successfully and efficiently work with one another. We found it helpful to touch base constantly with
 team members on every small update and meet up consistently when we would usually have class time, so we could work through any of our
 problems together more efficiently and quickly. 
-
-Our program has some limitations - occasionally, certain keywords will reach null pointer exceptions. We tried to debug the program so that 
+	Our program has some limitations - occasionally, certain keywords will reach null pointer exceptions. We tried to debug the program so that 
 it would run for a majority of keywords entered, however, certain keywords will still give us this error. Furthermore, our parsing program assumes 
-that resumes are formatted with the candidate names first, and experiences listed out afterwards. If given more time, we would expand the program to fix these issues. 
+that resumes are formatted with the candidate names first, and experiences listed out afterwards. If given more time, we would expand the program to 
+fix these issues. 
