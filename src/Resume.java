@@ -1,3 +1,8 @@
+//Duaa Zaheer, Davin Kyi, Allison Li
+//11/20/2020
+//Resume Reader 
+
+
 //Method description  
 /*
 This is a program that will be able to give you a short anaylsis of a resume in
@@ -16,10 +21,6 @@ import java.util.*;
 import java.io.*;
 
 public class Resume {
-   /*
-   //imagine if a person say present 
-   private static final String present = "present";
-   */
    //name of the person who wrote the resume  
    private String name;
    //this most likely will just tell you all the words it contains
@@ -32,10 +33,7 @@ public class Resume {
    private Scanner scanner;
    //this is the file of the resume  
    private File resumeData;  
-   
-   private String[] formats = {"%m/%d/%y", "%M %d, %y", "%d/%m/%y"};
-   
-   //i think we are going to pass in a file instead perhaps  
+ 
    public Resume(File file) throws FileNotFoundException {
       scanner = new Scanner(file);
       this.name = "";
@@ -63,11 +61,8 @@ public class Resume {
       }
    }
    
-   //maybe we will assume that the person's name is the first two words in the resume  
-   //this will return the name of the person wo wrote the resume  
+   // returns first line in resume file (assuming first line is candidate's full name)
    public String getName() {
-      //we have to determine how to get the name from the resume  
-      //THIS WILL BE THE FIRST LINE OF THE METHOD, OR THE EMPLOYER WILL PUT IN THE NAME IN HERE  
       return this.name;
    }
    
@@ -75,20 +70,10 @@ public class Resume {
       return (HashSet<String>) keyWords;
    }
    
-   //this will check to see if all of the words are contained within your keyWords needed map  
-   //might want to remove this later 
-   public boolean qualify(Set<String> neededWords) {
-     return keyWords.containsAll(neededWords);
-   }
-   
    //this will allow you to get all of the individual keywords amount of experience
    //by giving you the total time in which has shown up with the word   
-   //THIS IS THE MAIN THING WE NEED TO GET TO WORK, SO FAR THE BASE STRUCTURE GIVEN SO FAR
-   //SHOULD WORK, WE MIGHT NEED TO DEBUG IF THIS DOSEN'T WORK,
    public Map<String, Integer> getExperience() throws FileNotFoundException {
       scanner = new Scanner(this.resumeData);
-      //this will work if we are assuming that the first 2 words are going to be the 
-      //name of the person in which we are talking about
       while(scanner.hasNextLine()) {
          int totalMonths = 0;
          String line = scanner.nextLine();
@@ -98,12 +83,8 @@ public class Resume {
          //this will allow me to only change the times on the keywords found on
          //the one line 
          Set<String> foundWords = new TreeSet<String>();  
-         while (newScan.hasNext()) {
-            //this is a starter for the reading in of the time, but
-            //this is going to be trickier than i thought  
-            String word = normalize(newScan.next());
-            //this is how we are going to find the time 
-            //associated with each word on one line of the code  
+         while (newScan.hasNext()) {  
+            String word = normalize(newScan.next()); 
             if (months.contains(word)) {
                totalMonths = calculateMonths(word, newScan);
             } else {
@@ -117,9 +98,7 @@ public class Resume {
               //parseInt, if you are able to parse it, you will not do anything with it 
               //so if you don't run into an error, you will do what is in the try block, else you do
               //whatever was in the catch block  
-              
-              //catch, what you want to have happen when the exceptions in the try block occur  
-              //block is a term used to say everything inside along with the corresponding curly braces  
+              //catch, what you want to have happen when the exceptions in the try block occur   
               Integer.parseInt(keyWord);
            //in a try catch, the exception is an object  
            } catch (NumberFormatException e) {
@@ -160,13 +139,10 @@ public class Resume {
       int totalMonths = 0;
       String startMonth = word;
       int startYear = newScan.nextInt();
-      //we will think about what to do with a to or a - (always a -, or can it be a to/from, and etc.)  
       newScan.next(); //throws away the dash in the text 
       String endMonth = newScan.next();
       int endYear = 0;
       if (endMonth.equalsIgnoreCase("present")){
-         //endMonth = String.format("%d", Calendar.MONTH);
-         //Date date = new Date();
          Calendar calendar = new GregorianCalendar();
          endMonth = months.get(calendar.get(calendar.MONTH));
          endYear = calendar.get(calendar.YEAR);  
@@ -179,8 +155,7 @@ public class Resume {
       totalMonths += months.indexOf(endMonth) - months.indexOf(startMonth);
       return totalMonths;
    }
-    
-   // we want to figure out, are we going to be returning how many sets...
+
    public Map<String, Set<String>> containsWanted(Map<String, Set<String>> keyWord) {
       Map<String, Set<String>> foundKeyWords = new TreeMap<String, Set<String>>();
       for (String type : keyWord.keySet()) {
