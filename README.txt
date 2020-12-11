@@ -8,29 +8,28 @@ files onto your computer. To properly display some of the graphical interfaces (
 the StdDraw pack from Princeton University at this link https://introcs.cs.princeton.edu/java/stdlib/. Using the Command Prompt, you will need to 
 navigate to the directory (folder) that you cloned the Parsely repository into. You can do this by using the cd (change directory) command to switch 
 directories (paths) until you reach the correct folder. In the Parsely folder is a jar titled ExecutableJar.jar, which you can use to run our program.
-The next thing that will be typed into the command prompt is ëjava -jar ExecutableJar.jarí. Our program will immediately start running. 
+The next thing that will be typed into the command prompt is ‚Äòjava -jar ExecutableJar.jar‚Äô. Our program will immediately start running. 
 	For reference, our main method that is being ran is Client.java in the src folder. When this is ran, you will be prompted to enter a list of required 
-skills (keywords youíre strictly looking for) for the job, separated by commas. Next, you will be prompted to enter in a list of desired skills separated
-by commas, which would add points to overall resumes and be used to set candidates apart from others. Keep in mind that these ëskillsí can also just be 
-keywords youíre looking to spot out in a resume. For example if youíre hiring for a specific company and youíre giving special consideration to candidates 
-who have had prior experience at this company, you can also list the company name as a ëdesired skillí so extra weight is given to those candidates. 
+skills (keywords you‚Äôre strictly looking for) for the job, separated by commas. Next, you will be prompted to enter in a list of desired skills separated
+by commas, which would add points to overall resumes and be used to set candidates apart from others. Keep in mind that these ‚Äòskills‚Äô can also just be 
+keywords you‚Äôre looking to spot out in a resume. For example if you‚Äôre hiring for a specific company and you‚Äôre giving special consideration to candidates 
+who have had prior experience at this company, you can also list the company name as a ‚Äòdesired skill‚Äô so extra weight is given to those candidates. 
 Next, you will be asked if you value experience length, skills, or both equally when comparing candidates to each other. You can either type in 
-ëexperienceí, ëskillsí or ëíequalí. If you choose skills, this will give more weight in terms of ìpointsî for each desired skill that the candidate 
-has, and vice versa for length of experience (more weight in terms of how many months theyíve had experience with associated with the skills). If you 
-choose equal, both these factors will be weighed equally quantitatively when adding up candidate ìpointsî. 
+‚Äòexperience‚Äô, ‚Äòskills‚Äô or ‚Äò‚Äôequal‚Äô. If you choose skills, this will give more weight in terms of ‚Äúpoints‚Äù for each desired skill that the candidate 
+has, and vice versa for length of experience (more weight in terms of how many months they‚Äôve had experience with associated with the skills). If you 
+choose equal, both these factors will be weighed equally quantitatively when adding up candidate ‚Äúpoints‚Äù. 
 	Next, you will be given the option to either manually type in the names of each Resume file for each candidate you are looking at separated by 
-commas (Ex: ìBobBuilderResume.txt, SteveJobsResume.txt, MeganTheeStallion.txtî) OR type in the name of one file that contains all the resume file names
-listed out one after the other (no commas for separation needed). Before getting to the file names, you can either type in ëtypeí or ëreadí to specify
-which method you wish to use. For testing purposes and to make it so that you donít have to type in the name of each resume manually, the Parsely project 
-includes a variety of example resume test files weíve accounted for in our code, and a holistic file titled ìAllResumeNames.txtî which you can use and 
-type in for the ëreadí option. 
-	Finally, you will be prompted to either print out the evaluation results for Parsely either ëindividuallyí or as a ëgroupí. The ëgroupí option prints 
-out overall statistics for the entire candidate pool, with a basic overview of each candidate included (their name, whether they were rejected/accepted, 
-and a list of the required or desired skills you first entered that their resume included). Additionally, this option prints out bell curve for overall
-group statistics in terms of ìpointsî scored. The ëindividuallyí option prints out each candidate in more detail (their name, whether they were 
-accepted/rejected, reason for their acceptance/rejection, as well as the basic or desired skills included in their resume). These candidate results are
-each represented one by one every 5 seconds, accompanied by a new tab that opens up with a bell curve for the group statistics with an ëxí and the candidate
-name that marks where that candidate lies on the curve in comparison to their entire group). Every 5 seconds, the bell curve tab for the prior candidate 
-will be replaced by a new tab representing the next candidate. 
+commas (Ex: ‚ÄúBobBuilderResume.txt, SteveJobsResume.txt, MeganTheeStallion.txt‚Äù) OR type in the name of one file that contains all the resume file names
+listed out one after the other (no commas for separation needed). Before getting to the file names, you can either type in ‚Äòtype‚Äô or ‚Äòread‚Äô to specify
+which method you wish to use. For testing purposes and to make it so that you don‚Äôt have to type in the name of each resume manually, the Parsely project 
+includes a variety of example resume test files we‚Äôve accounted for in our code, and a holistic file titled ‚ÄúAllResumeNames.txt‚Äù which you can use and 
+type in for the ‚Äòread‚Äô option. 
+	Finally, you will be prompted to either print out the evaluation results for Parsely either ‚Äòindividually‚Äô or as a ‚Äògroup‚Äô. The ‚Äògroup‚Äô option prints 
+out overall statistics for the entire candidate pool, with a basic overview of each candidate included (their name, whether they were rejected/accepted, the scored 
+"points", the percentile they fall on compared to all the candidates (This will be 0.0 if they do not pass the basic qualifications)). Additionally, this option prints
+out bell curve for overall group statistics in terms of ‚Äúpoints‚Äù scored. The ‚Äòindividually‚Äô option prints out each candidate in more detail (their name, whether they were accepted/rejected, reason for their acceptance/rejection, percentile they fall on, as well as the basic or desired skills included in their resume). These candidate 
+results are each represented one by one every 5 seconds, accompanied by a new tab that opens up with a bell curve for the group statistics with an ‚Äòx‚Äô and the candidate 
+name that marks where that candidate lies on the curve in comparison to their entire group). Every 5 seconds, the bell curve tab for the prior candidate will be replaced 
+by a new tab representing the next candidate. 
 
 Link to video walkthrough (with Eclipse IDE): https://drive.google.com/file/d/17VEgmkzEDiO3s0rqGBwC_7mvAUUV0gXm/view?usp=sharing
