@@ -24,7 +24,8 @@ public class Client {
 	    for (String desSkill : allDesSkillsSplit) {
 	    	desiredKeyWords.add(desSkill.toLowerCase());
 	    }
-	
+	    
+	    // Will tell the algorithm whether to consider length of experiences, skills, or both equally when assigning points to candidates
 	    System.out.println("Do you value experience, skills, or both equally in a candidate?");
 	    System.out.print("Type 'experience', 'skills', or 'equal': ");
 	    String weight = scanner.next();
@@ -32,6 +33,7 @@ public class Client {
 	    scanner.nextLine();
 	    String response = scanner.nextLine();
 	    if(response.equals("read")) {
+	    	// AllResumeNames.txt can be entered here
 	    	System.out.println("Type in the name of the file that lists all the resume file names: ");
 	    	String fileName = scanner.nextLine();
 	    	Scanner fileScan = new Scanner(new File(fileName));
@@ -43,7 +45,6 @@ public class Client {
 	    	fileScan.close();
 	    } else {
 		    System.out.println("Type in all the file names of candidate resumes you wish to consider, separated by commas: ");
-		    //scanner.nextLine();
 		    String allResumeNames = scanner.nextLine();
 		    String[] allNamesSplit = allResumeNames.split(", ");
 		    for (String name : allNamesSplit) {
@@ -52,9 +53,11 @@ public class Client {
 		    }
 	    }
 	    
+	    // Creates a new Algorithm for evaluating these given candidate resumes
 		Algorithm evaluating = new Algorithm(candidates, basicKeyWords, desiredKeyWords, weight);
 	    evaluating.evaluate(candidates);
-	    System.out.print("Would you like to print it out evaluation results for candidates individually, or as a group? ");
+	    System.out.println("Would you like to print it out evaluation results for candidates individually, or as a group? ");
+	    System.out.print("Type 'individually' or 'group': ");
 	    String howToPrint = scanner.nextLine();
 	    System.out.println();
 	    if (howToPrint.equals("individually")) {
